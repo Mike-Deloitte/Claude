@@ -30,7 +30,9 @@ import {
   generateScenarios,
   remainingScenarioCount,
   scenarioKeysUsed,
+  scenarioTitlesUsed,
 } from './src/scenarios';
+import { SCENARIO_API } from './src/config';
 import { computeScores } from './src/scoring';
 
 const COLORS = {
@@ -116,8 +118,17 @@ export default function App() {
 
   async function handleStart() {
     if (!activeProfile) return;
-    const used = scenarioKeysUsed(activeProfile.sessions);
-    const scenarios = await generateScenarios(sessionSize, used);
+    let scenarios;
+    try {
+      scenarios = await generateScenarios(
+        sessionSize,
+        scenarioKeysUsed(activeProfile.sessions),
+        scenarioTitlesUsed(activeProfile.sessions)
+      );
+    } catch (err) {
+      Alert.alert('Could not start', 'New scenarios could not be fetched. Check the scenario server, then try again.');
+      return;
+    }
     if (scenarios.length < sessionSize) {
       Alert.alert('Not enough new scenarios', 'Choose a smaller session.');
       return;
@@ -193,7 +204,8 @@ export default function App() {
     <HomeScreen
       profile={activeProfile}
       sessionSize={sessionSize}
-      remaining={activeProfile ? remainingScenarioCount(activeProfile.sessions) : 0}
+      bankLeft={activeProfile ? remainingScenarioCount(activeProfile.sessions) : 0}
+      aiOn={Boolean(SCENARIO_API.url)}
       onSizeChange={setSessionSize}
       onStart={handleStart}
       onResults={() => setScreen('results')}
@@ -290,9 +302,12 @@ function ProfilesScreen({ profiles, activeId, onCreate, onOpen, onDelete }) {
   );
 }
 
-function HomeScreen({ profile, sessionSize, remaining, onSizeChange, onStart, onResults, onSwitch }) {
-  const exhausted = remaining === 0;
-  const tooLarge = sessionSize > remaining;
+// With no scenario server, a profile is limited to the built-in bank. With one, new
+// scenarios are generated when the bank runs out, so there is no limit.
+function HomeScreen({ profile, sessionSize, bankLeft, aiOn, onSizeChange, onStart, onResults, onSwitch }) {
+  const limit = aiOn ? Infinity : bankLeft;
+  const exhausted = limit === 0;
+  const tooLarge = sessionSize > limit;
   return (
     <Screen title={profile.name} subtitle="Active profile">
       <Card>
@@ -303,15 +318,17 @@ function HomeScreen({ profile, sessionSize, remaining, onSizeChange, onStart, on
               key={n}
               label={String(n)}
               selected={n === sessionSize}
-              disabled={n > remaining}
+              disabled={n > limit}
               onPress={() => onSizeChange(n)}
             />
           ))}
         </View>
         <Text style={styles.muted}>
-          {exhausted
-            ? 'You have seen every scenario available to this profile.'
-            : `${plural(remaining, 'new scenario')} left for this profile. A scenario is never shown twice.`}
+          {aiOn
+            ? `${plural(bankLeft, 'built-in scenario')} left for this profile. New ones are generated after that. A scenario is never shown twice.`
+            : exhausted
+              ? 'You have seen every scenario available to this profile.'
+              : `${plural(bankLeft, 'new scenario')} left for this profile. A scenario is never shown twice.`}
         </Text>
         <Button
           label="Start session"
@@ -319,7 +336,7 @@ function HomeScreen({ profile, sessionSize, remaining, onSizeChange, onStart, on
           disabled={exhausted || tooLarge}
         />
         {tooLarge && !exhausted ? (
-          <Text style={styles.muted}>Choose a session of {remaining} or fewer.</Text>
+          <Text style={styles.muted}>Choose a session of {limit} or fewer.</Text>
         ) : null}
       </Card>
 

@@ -92,25 +92,39 @@ The moral ids are prefixed or distinct from the value ids, because every tag id 
 
 **Not yet implemented (TODO):** a consistency measure. Count the distinct scenarios that support each tag and factor that into confidence, so one scenario repeated many times does not read as "high". The TODO is in `scoring.js`.
 
-## Stubs and the planned backend
+## Stubs and the planned analysis endpoint
 
 Both of these run locally today. Their signatures are async so a backend call can replace them without changing callers.
 
 - `generateScenarios(count, excludeKeys)` draws up to `count` scenarios from the bank that are not in `excludeKeys`. Each scenario has a stable `key`. `scenarioKeysUsed(sessions)` lists the keys a profile has already seen, across all its sessions, so no scenario repeats within a profile. Every scenario gets a unique id and at least four options. Each scenario has at least one option that carries moral tags.
 - `analyzeWritten(text)` does keyword matching. Each keyword hit adds 0.5 to a tag's strength, capped at 1. Matching is whole-word with common endings, so "career" does not match "care". It covers values, philosophies, and morals.
 
-Planned replacement (not built):
+## Generating new scenarios (optional)
 
-- `POST /scenarios` with `{ count, excludeIds? }`, returning scenarios in the same shape, using only taxonomy ids.
-- `POST /analyze` with `{ text, scenario }`, returning tag strengths using only taxonomy ids.
+When a profile has used all built-in scenarios, the app can ask the scenario server for new ones. Without the server, the profile stops at the built-in bank.
 
-Rules for that backend:
+Run it on your own computer:
 
-- The AI API key lives only on the server. The app must never contain one.
-- Only the scenario text and the user's written answer leave the device.
-- Never send the profile name or other identifying details.
+1. Start the server, with your AI key and a token of your choice:
+   ```bash
+   ANTHROPIC_API_KEY=your-key SCENARIO_TOKEN=some-long-random-string node server/scenario-server.mjs
+   ```
+   For testing without an AI key, use `MOCK_AI=1` instead of `ANTHROPIC_API_KEY`.
+2. Find your computer's address on the Wi-Fi, for example `192.168.1.20`.
+3. In `src/config.js`, set `url` to `http://192.168.1.20:8787` and `token` to the same token. Restart Expo.
+4. Keep the server running while you use the app. Your phone and computer must be on the same Wi-Fi.
 
-`sanitizeTags()` in `src/taxonomy.js` already drops unknown ids and clamps strengths, so responses from the backend cannot inject unknown tags.
+What the server does and does not do:
+
+- The AI key stays on the computer. It is never in the app.
+- The app sends only how many scenarios it needs and the titles the profile has already seen. It never sends the profile name or answers.
+- The token is included in the app, so use a throwaway token for testing. It is not a secret from anyone who has the app.
+- AI-generated scenarios are not reviewed by a person. Read a few before relying on them.
+- The server is for local testing only. It is not hosted or secured for use by others.
+
+The reply is checked on the server and again in the app. Scenarios with the wrong number of options, unknown tags, or no moral tag are dropped.
+
+`sanitizeTags()` in `src/taxonomy.js` already drops unknown ids and clamps strengths, so responses from the server cannot inject unknown tags.
 
 ## Behaviour notes
 
