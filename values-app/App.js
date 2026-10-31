@@ -34,6 +34,7 @@ import {
 } from './src/scenarios';
 import { SCENARIO_API } from './src/config';
 import { computeScores } from './src/scoring';
+import { buildExecutiveSummary } from './src/summary';
 
 const COLORS = {
   accent: '#1d4f91',
@@ -441,6 +442,7 @@ function ResultsScreen({ profile, onBack }) {
         <EmptyState text="No results yet. Complete a session to see your values and philosophies." />
       ) : (
         <>
+          <ExecutiveSummary summary={buildExecutiveSummary(scores)} />
           <Card>
             <Text style={styles.cardTitle}>Summary</Text>
             <SummaryLine heading="Leading values" items={scores.values.slice(0, 3)} />
@@ -490,6 +492,46 @@ function EmptyState({ text }) {
   return (
     <View style={styles.emptyState}>
       <Text style={styles.muted}>{text}</Text>
+    </View>
+  );
+}
+
+function ExecutiveSummary({ summary }) {
+  if (!summary) return null;
+  return (
+    <Card>
+      <Text style={styles.cardTitle}>Executive summary</Text>
+      <Text style={styles.body}>{summary.lead}</Text>
+      {summary.early ? (
+        <Text style={styles.muted}>
+          This is an early picture. It will firm up as you add more responses.
+        </Text>
+      ) : null}
+
+      {summary.findings.length > 0 ? (
+        <>
+          <Text style={styles.label}>Key findings</Text>
+          <Bullets items={summary.findings} />
+        </>
+      ) : null}
+
+      <Text style={styles.label}>How they relate</Text>
+      <Bullets items={summary.relations} />
+
+      <Text style={styles.muted}>{summary.caveat}</Text>
+    </Card>
+  );
+}
+
+function Bullets({ items }) {
+  return (
+    <View style={styles.bullets}>
+      {items.map((item, i) => (
+        <View key={i} style={styles.bulletRow}>
+          <Text style={styles.bulletDot}>•</Text>
+          <Text style={styles.bulletText}>{item}</Text>
+        </View>
+      ))}
     </View>
   );
 }
@@ -675,6 +717,10 @@ const styles = StyleSheet.create({
   fill: { height: 10, borderRadius: 5, backgroundColor: COLORS.accent },
 
   summaryLine: { gap: 4 },
+  bullets: { gap: 8 },
+  bulletRow: { flexDirection: 'row', gap: 8 },
+  bulletDot: { fontSize: 16, color: COLORS.accent, lineHeight: 23 },
+  bulletText: { flex: 1, fontSize: 16, lineHeight: 23, color: COLORS.text },
   scoreRow: { gap: 6, marginTop: 4 },
   scoreHeader: { flexDirection: 'row', justifyContent: 'space-between' },
   scoreLabel: { fontSize: 16, fontWeight: '600', color: COLORS.text },

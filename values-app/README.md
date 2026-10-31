@@ -39,7 +39,9 @@ values-app/
   src/
     taxonomy.js     Fixed VALUES, PHILOSOPHIES, WRITTEN_WEIGHT, sanitizeTags()
     scenarios.js    generateScenarios(count) and analyzeWritten(text) - STUBS
-    scoring.js      computeScores(sessions) -> { responseCount, values, philosophies }
+    scoring.js      computeScores(sessions) -> { responseCount, values, philosophies, morals }
+    summary.js      buildExecutiveSummary(scores) for the Results screen
+    relations.js    How tags relate, for the executive summary
     storage.js      load/save state; createProfile, switchProfile, deleteProfile, appendSession
 ```
 
@@ -98,6 +100,18 @@ Both of these run locally today. Their signatures are async so a backend call ca
 
 - `generateScenarios(count, excludeKeys)` draws up to `count` scenarios from the bank that are not in `excludeKeys`. Each scenario has a stable `key`. `scenarioKeysUsed(sessions)` lists the keys a profile has already seen, across all its sessions, so no scenario repeats within a profile. Every scenario gets a unique id and at least four options. Each scenario has at least one option that carries moral tags.
 - `analyzeWritten(text)` does keyword matching. Each keyword hit adds 0.5 to a tag's strength, capped at 1. Matching is whole-word with common endings, so "career" does not match "care". It covers values, philosophies, and morals.
+
+## Executive summary (Results screen)
+
+`src/summary.js` writes the summary from the scores. It runs on the device, with no AI and no network.
+
+- The lead sentence names the top value, philosophy, and moral foundation.
+- Key findings list the top three in each category with their percentages.
+- "How they relate" checks the top three in each category against `src/relations.js`. Aligned pairs are shown as going together. Tension pairs are shown as possibly pulling in different directions. Pairs only appear when both items are leading.
+- Under 10 responses, the summary says it is an early picture.
+- Every summary ends with a caveat: these are patterns in scenario answers, not a diagnosis or a validated test.
+
+To change how items relate, edit `src/relations.js`. Use taxonomy ids only.
 
 ## The built-in scenario bank
 
