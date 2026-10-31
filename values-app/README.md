@@ -96,7 +96,7 @@ The moral ids are prefixed or distinct from the value ids, because every tag id 
 
 Both of these run locally today. Their signatures are async so a backend call can replace them without changing callers.
 
-- `generateScenarios(count)` shuffles a bank of six scenarios and cycles if `count` is larger than six. Every scenario gets a unique id and at least four options. Each scenario has at least one option that carries moral tags.
+- `generateScenarios(count)` shuffles a bank of fifteen scenarios and cycles only if `count` is larger than fifteen, so sessions of up to 15 never repeat. Every scenario gets a unique id and at least four options. Each scenario has at least one option that carries moral tags.
 - `analyzeWritten(text)` does keyword matching. Each keyword hit adds 0.5 to a tag's strength, capped at 1. Matching is whole-word with common endings, so "career" does not match "care". It covers values, philosophies, and morals.
 
 Planned replacement (not built):
@@ -128,7 +128,7 @@ Rules for that backend:
 ## Known limitations
 
 - The written-answer analysis is keyword matching and will miss a lot. Treat its tags as rough.
-- Scenarios are a fixed set of six, so long sessions repeat them.
+- Scenarios are a fixed bank of fifteen. Sessions of up to fifteen do not repeat, but more than fifteen would.
 - The `react-native` version is pinned to 0.76.5 as specified. `expo install --check` reports 0.76.9 as the SDK 52 expected version.
 - `app.json` uses placeholder bundle identifiers (`com.example.values`). Change them before any store build. No icon or splash image is set.
 - Verified by bundling for iOS and Android, running the Metro dev server, unit-testing the pure logic, and driving the UI in a browser harness. Not yet run on a physical device or simulator.

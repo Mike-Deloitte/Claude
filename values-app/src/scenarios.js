@@ -67,6 +67,96 @@ const SCENARIO_BANK = [
       { text: 'Say no to the pressure to decide fast, and trust your own judgement.', tags: { autonomy: 0.8, virtue: 0.5, liberty: 0.6 } },
     ],
   },
+  {
+    title: 'A lost wallet',
+    text: 'You find a wallet on the bus. It has some cash and an ID card with the owner name and address.',
+    options: [
+      { text: 'Return the wallet with everything in it, untouched.', tags: { honesty: 0.9, duty: 0.8, reciprocity: 0.7, 'harm-care': 0.4 } },
+      { text: 'Return it and keep a small reward for the trouble.', tags: { reciprocity: 0.5, achievement: 0.3, consequentialist: 0.4 } },
+      { text: 'Keep the cash, since nobody saw you pick it up.', tags: { security: 0.7, achievement: 0.4 } },
+      { text: 'Hand it to the bus driver and let them handle it.', tags: { authority: 0.6, duty: 0.5, security: 0.3, 'ingroup-loyalty': 0.2 } },
+    ],
+  },
+  {
+    title: 'A noisy neighbour',
+    text: 'A neighbour plays loud music late at night. It has happened several times this month.',
+    options: [
+      { text: 'Knock on the door and ask them to turn it down.', tags: { virtue: 0.5, autonomy: 0.5, care: 0.4, honesty: 0.4 } },
+      { text: 'Call the building manager and ask them to deal with it.', tags: { authority: 0.6, duty: 0.5, security: 0.5 } },
+      { text: 'Say nothing. It is one more night, and it will pass.', tags: { consequentialist: 0.5, autonomy: 0.3 } },
+      { text: 'Get the other neighbours to raise it together.', tags: { egalitarian: 0.7, reciprocity: 0.5, 'ingroup-loyalty': 0.5, virtue: 0.3 } },
+    ],
+  },
+  {
+    title: 'Caring for a parent',
+    text: 'Your ageing parent needs more help than you can give on your own.',
+    options: [
+      { text: 'Move them into your home and take on their care yourself.', tags: { loyalty: 0.8, care: 0.8, 'ingroup-loyalty': 0.6, duty: 0.6 } },
+      { text: 'Arrange professional care, paid for jointly with your siblings.', tags: { fairness: 0.6, reciprocity: 0.7, consequentialist: 0.5, security: 0.4 } },
+      { text: 'Choose a care home they can afford, and visit them often.', tags: { security: 0.6, consequentialist: 0.5, 'harm-care': 0.5 } },
+      { text: 'Ask your parent what they would prefer, and respect their answer.', tags: { autonomy: 0.8, care: 0.6, liberty: 0.5, virtue: 0.4 } },
+    ],
+  },
+  {
+    title: 'Credit in a meeting',
+    text: 'In a team meeting, your manager presents an idea that a colleague came up with, and does not mention them.',
+    options: [
+      { text: 'Politely correct the record in the meeting.', tags: { honesty: 0.8, fairness: 0.7, virtue: 0.5, reciprocity: 0.6 } },
+      { text: 'Speak to your colleague privately first.', tags: { care: 0.5, virtue: 0.4, loyalty: 0.3 } },
+      { text: 'Say nothing now. Your own work will speak for itself.', tags: { achievement: 0.4, security: 0.6, tradition: 0.3 } },
+      { text: 'Email your manager afterwards to set out who did what.', tags: { honesty: 0.6, autonomy: 0.5, authority: 0.4, reciprocity: 0.5 } },
+    ],
+  },
+  {
+    title: 'A sick day',
+    text: 'You feel unwell, but you have a major deadline today.',
+    options: [
+      { text: 'Go in and push through the day.', tags: { achievement: 0.8, duty: 0.4, consequentialist: 0.4 } },
+      { text: 'Stay home and tell your team clearly.', tags: { honesty: 0.6, care: 0.6, 'harm-care': 0.6, duty: 0.5 } },
+      { text: 'Work from home for part of the day.', tags: { autonomy: 0.5, consequentialist: 0.6, reciprocity: 0.4 } },
+      { text: 'Ask a colleague to take over the most urgent part.', tags: { loyalty: 0.5, reciprocity: 0.6, 'ingroup-loyalty': 0.5, fairness: 0.3 } },
+    ],
+  },
+  {
+    title: 'A foul nobody saw',
+    text: 'The team your child plays for is winning, and you saw an opponent commit a foul that the referee missed.',
+    options: [
+      { text: 'Tell the referee what you saw.', tags: { honesty: 0.9, duty: 0.6, reciprocity: 0.5 } },
+      { text: 'Say nothing. It is part of the game.', tags: { loyalty: 0.6, 'ingroup-loyalty': 0.8, consequentialist: 0.3 } },
+      { text: 'Talk to the coach after the match.', tags: { authority: 0.6, virtue: 0.5, honesty: 0.5 } },
+      { text: 'Ask the players to play fairly from now on.', tags: { virtue: 0.5, fairness: 0.5, egalitarian: 0.4 } },
+    ],
+  },
+  {
+    title: 'A ceremony that conflicts with your beliefs',
+    text: 'A colleague invites you to a cultural ceremony that conflicts with your own beliefs.',
+    options: [
+      { text: 'Attend to show respect for their tradition.', tags: { tradition: 0.6, care: 0.5, virtue: 0.3 } },
+      { text: 'Politely decline and explain your position.', tags: { autonomy: 0.7, honesty: 0.6, liberty: 0.5 } },
+      { text: 'Attend briefly, and leave before the most important part.', tags: { virtue: 0.3, consequentialist: 0.5, autonomy: 0.4 } },
+      { text: 'Ask them what it means to them before you decide.', tags: { care: 0.6, virtue: 0.6, 'harm-care': 0.4 } },
+    ],
+  },
+  {
+    title: 'A year-end surplus',
+    text: 'Your company ends the year with a budget surplus. Leadership asks for ideas on how to use it.',
+    options: [
+      { text: 'Give everyone the same bonus.', tags: { egalitarian: 1, fairness: 0.6, reciprocity: 0.5 } },
+      { text: 'Reward the teams with the strongest results.', tags: { achievement: 0.8, consequentialist: 0.7, reciprocity: 0.5 } },
+      { text: 'Invest it in training for the people who need it most.', tags: { care: 0.6, consequentialist: 0.6, 'harm-care': 0.5 } },
+      { text: 'Keep it in reserve for harder times.', tags: { security: 0.9, duty: 0.4 } },
+    ],
+  },
+  {
+    title: 'A request to cover a lie',
+    text: 'An old friend asks you to back up a story they have told their partner about where they were last night.',
+    options: [
+      { text: 'Refuse, and explain why.', tags: { honesty: 0.9, duty: 0.6, virtue: 0.6 } },
+      { text: 'Back them up this once.', tags: { loyalty: 0.8, 'ingroup-loyalty': 0.6, care: 0.4 } },
+      { text: 'Tell them you will not lie, but offer to help them talk to their partner.', tags: { care: 0.6, virtue: 0.6, honesty: 0.6, autonomy: 0.3 } },
+      { text: 'Ask them to explain the whole situation before you decide.', tags: { honesty: 0.4, virtue: 0.5, autonomy: 0.4 } },
+    ],
+  },
 ];
 
 function shuffle(items) {
