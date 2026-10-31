@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Values",
+    "slug": "values-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#ffffff",
+    "splash": {
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "bundleIdentifier": "com.example.values"
+    },
+    "android": {
+      "package": "com.example.values"
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}
