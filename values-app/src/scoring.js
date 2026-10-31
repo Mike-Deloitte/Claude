@@ -1,4 +1,4 @@
-import { PHILOSOPHIES, VALUES, WRITTEN_WEIGHT, isTagId } from './taxonomy';
+import { MORALS, PHILOSOPHIES, VALUES, WRITTEN_WEIGHT, isTagId } from './taxonomy';
 
 // Scores are computed from the stored responses every time, never cached.
 // That way a change to the rules here updates every profile's results.
@@ -7,7 +7,7 @@ import { PHILOSOPHIES, VALUES, WRITTEN_WEIGHT, isTagId } from './taxonomy';
 // - raw[tag] = sum over all responses of (weight x strength), across all sessions.
 // - weight is WRITTEN_WEIGHT for written answers and 1 for choices.
 // - Tags with strength 0 (or unknown ids) are ignored entirely, so they are not evidence.
-// - percent = raw / total raw within the same category (values or philosophies), rounded.
+// - percent = raw / total raw within the same category (values, philosophies or morals), rounded.
 // - Tags with zero raw score are left out of the rankings.
 
 // TODO (not yet implemented): consistency. Count the distinct scenarios that support each
@@ -62,5 +62,6 @@ export function computeScores(sessions) {
     responseCount,
     values: rankCategory(VALUES, raw, evidence),
     philosophies: rankCategory(PHILOSOPHIES, raw, evidence),
+    morals: rankCategory(MORALS, raw, evidence),
   };
 }

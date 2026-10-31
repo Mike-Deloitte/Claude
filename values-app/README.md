@@ -77,13 +77,16 @@ The ids are stored in user data. **Do not rename them.** Labels can change freel
 
 - Values: `fairness`, `loyalty`, `honesty`, `care`, `autonomy`, `achievement`, `tradition`, `security`
 - Philosophies: `consequentialist`, `duty`, `virtue`, `egalitarian`
+- Morals (moral foundations, after Haidt): `harm-care`, `reciprocity`, `ingroup-loyalty`, `authority`, `sanctity`, `liberty`
+
+The moral ids are prefixed or distinct from the value ids, because every tag id must be unique across the taxonomy.
 
 ## Scoring rules (`src/scoring.js`)
 
 - `raw[tag]` = sum over every response in every session of `weight × strength`.
 - `weight` is `WRITTEN_WEIGHT` (1.5) for written answers and 1 for choices.
 - Tags with strength 0, and unknown ids, are ignored entirely. They do not count as evidence.
-- Values and philosophies are ranked separately. `percent = raw / total raw in that category`, rounded.
+- Values, philosophies, and morals are ranked separately. `percent = raw / total raw in that category`, rounded.
 - Tags with a zero raw score are left out of the rankings.
 - Confidence depends on evidence count, the number of responses tagged with that tag: 10 or more is **high**, 4 to 9 is **medium**, and fewer than 4 is **low**.
 
@@ -93,8 +96,8 @@ The ids are stored in user data. **Do not rename them.** Labels can change freel
 
 Both of these run locally today. Their signatures are async so a backend call can replace them without changing callers.
 
-- `generateScenarios(count)` shuffles a bank of six scenarios and cycles if `count` is larger than six. Every scenario gets a unique id.
-- `analyzeWritten(text)` does keyword matching. Each keyword hit adds 0.5 to a tag's strength, capped at 1. Matching is whole-word with common endings, so "career" does not match "care".
+- `generateScenarios(count)` shuffles a bank of six scenarios and cycles if `count` is larger than six. Every scenario gets a unique id and at least four options. Each scenario has at least one option that carries moral tags.
+- `analyzeWritten(text)` does keyword matching. Each keyword hit adds 0.5 to a tag's strength, capped at 1. Matching is whole-word with common endings, so "career" does not match "care". It covers values, philosophies, and morals.
 
 Planned replacement (not built):
 
@@ -116,6 +119,11 @@ Rules for that backend:
 - Deleting the active profile makes the first remaining profile active. If none remain, no profile is active.
 - A session is saved only when its last scenario is answered. "Leave session" discards it, and closing the app mid-session also discards it.
 - Profile names are trimmed and limited to 40 characters.
+
+## Limitations of the morals result
+
+- Results come from the answers given in these scenarios only. They are not a measure of someone's moral character.
+- Sessions saved before this change have no morals tags, so their morals ranking starts empty. They are not re-asked; only new sessions contribute.
 
 ## Known limitations
 

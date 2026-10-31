@@ -11,108 +11,60 @@ const SCENARIO_BANK = [
     title: 'The group project',
     text: 'A teammate missed their part of a group project, and the deadline is tomorrow. You could cover for them, or you could raise it.',
     options: [
-      {
-        text: 'Cover for them quietly so the team meets the deadline.',
-        tags: { loyalty: 0.8, care: 0.6, consequentialist: 0.5 },
-      },
-      {
-        text: 'Tell the instructor what happened, with the facts.',
-        tags: { honesty: 0.9, fairness: 0.5, duty: 0.7 },
-      },
-      {
-        text: 'Talk to your teammate first and agree on a plan together.',
-        tags: { care: 0.6, autonomy: 0.3, virtue: 0.5 },
-      },
+      { text: 'Cover for them quietly so the team meets the deadline.', tags: { loyalty: 0.8, care: 0.6, consequentialist: 0.5, 'ingroup-loyalty': 0.7 } },
+      { text: 'Tell the instructor what happened, with the facts.', tags: { honesty: 0.9, fairness: 0.5, duty: 0.7, reciprocity: 0.6 } },
+      { text: 'Talk to your teammate first and agree on a plan together.', tags: { care: 0.6, autonomy: 0.3, virtue: 0.5, 'harm-care': 0.5 } },
+      { text: 'Take over their part and ask the team to share the extra work fairly.', tags: { fairness: 0.6, egalitarian: 0.5, reciprocity: 0.7 } },
     ],
   },
   {
     title: 'A job with a trade-off',
     text: 'You have two job offers. One pays significantly more but demands long hours. The other pays less and leaves your evenings free.',
     options: [
-      {
-        text: 'Take the higher-paying role and push for results.',
-        tags: { achievement: 0.9, consequentialist: 0.4 },
-      },
-      {
-        text: 'Take the role with more time for the people you care about.',
-        tags: { care: 0.6, autonomy: 0.6, virtue: 0.3 },
-      },
-      {
-        text: 'Negotiate for a middle path before you decide.',
-        tags: { autonomy: 0.4, consequentialist: 0.6, fairness: 0.3 },
-      },
+      { text: 'Take the higher-paying role and push for results.', tags: { achievement: 0.9, consequentialist: 0.4 } },
+      { text: 'Take the role with more time for the people you care about.', tags: { care: 0.6, autonomy: 0.6, virtue: 0.3, 'harm-care': 0.4 } },
+      { text: 'Negotiate for a middle path before you decide.', tags: { autonomy: 0.4, consequentialist: 0.6, fairness: 0.3, reciprocity: 0.4 } },
+      { text: 'Stay where you are, a job you know well and trust.', tags: { security: 0.8, tradition: 0.5, duty: 0.5, loyalty: 0.6, 'ingroup-loyalty': 0.5 } },
     ],
   },
   {
     title: 'A limited supply',
     text: 'A community kitchen has enough food for only half the people waiting. You decide how it is shared out.',
     options: [
-      {
-        text: 'Serve people in the order they arrived.',
-        tags: { fairness: 0.5, duty: 0.6 },
-      },
-      {
-        text: 'Prioritise families with young children and those who are most in need.',
-        tags: { care: 0.8, consequentialist: 0.5 },
-      },
-      {
-        text: 'Split the food evenly among everyone present.',
-        tags: { egalitarian: 1, fairness: 0.7 },
-      },
+      { text: 'Serve people in the order they arrived.', tags: { fairness: 0.5, duty: 0.6, reciprocity: 0.5 } },
+      { text: 'Prioritise families with young children and those most in need.', tags: { care: 0.8, consequentialist: 0.5, 'harm-care': 0.8 } },
+      { text: 'Split the food evenly among everyone present.', tags: { egalitarian: 1, fairness: 0.7, reciprocity: 0.4 } },
+      { text: 'Ask the people waiting to decide together.', tags: { autonomy: 0.4, virtue: 0.5, liberty: 0.6 } },
     ],
   },
   {
     title: 'A family tradition',
     text: 'A relative insists on a holiday ritual that you find pointless, and everyone else seems to enjoy it.',
     options: [
-      {
-        text: 'Keep the ritual to honour the family and its history.',
-        tags: { tradition: 0.9, loyalty: 0.6 },
-      },
-      {
-        text: 'Suggest changing it gently so it fits everyone better.',
-        tags: { autonomy: 0.5, care: 0.5, virtue: 0.3 },
-      },
-      {
-        text: 'Skip it and explain your reasons openly.',
-        tags: { autonomy: 0.8, honesty: 0.6 },
-      },
+      { text: 'Keep the ritual to honour the family and its history.', tags: { tradition: 0.9, loyalty: 0.6, 'ingroup-loyalty': 0.6, sanctity: 0.5 } },
+      { text: 'Suggest changing it gently so it fits everyone better.', tags: { autonomy: 0.5, care: 0.5, virtue: 0.3 } },
+      { text: 'Skip it and explain your reasons openly.', tags: { autonomy: 0.8, honesty: 0.6, liberty: 0.6 } },
+      { text: 'Ask the relative what the ritual means to them before deciding.', tags: { care: 0.7, virtue: 0.5, 'harm-care': 0.5 } },
     ],
   },
   {
     title: 'An error in your own work',
     text: 'You find a mistake in a report you already sent to a client. So far it has not caused any harm.',
     options: [
-      {
-        text: 'Correct it immediately and tell the client.',
-        tags: { honesty: 1, duty: 0.7 },
-      },
-      {
-        text: 'Weigh how much it matters before deciding what to do.',
-        tags: { consequentialist: 0.9, security: 0.4 },
-      },
-      {
-        text: 'Fix it quietly in the next version of the report.',
-        tags: { achievement: 0.5, security: 0.5, consequentialist: 0.3 },
-      },
+      { text: 'Correct it immediately and tell the client.', tags: { honesty: 1, duty: 0.7, reciprocity: 0.6 } },
+      { text: 'Weigh how much it matters before deciding what to do.', tags: { consequentialist: 0.9, security: 0.4 } },
+      { text: 'Fix it quietly in the next version of the report.', tags: { achievement: 0.5, security: 0.5, consequentialist: 0.3 } },
+      { text: 'Tell your manager first so they can decide how to handle the client.', tags: { authority: 0.6, duty: 0.5, loyalty: 0.3, 'ingroup-loyalty': 0.3 } },
     ],
   },
   {
     title: 'A risky opportunity',
     text: 'A friend invites you into a new venture with uncertain returns. It would use a large part of your savings.',
     options: [
-      {
-        text: 'Decline and keep your savings secure.',
-        tags: { security: 0.9, duty: 0.3 },
-      },
-      {
-        text: 'Invest only an amount you could afford to lose.',
-        tags: { achievement: 0.6, autonomy: 0.6, consequentialist: 0.6 },
-      },
-      {
-        text: 'Ask for more information before deciding anything.',
-        tags: { honesty: 0.3, virtue: 0.5, security: 0.5 },
-      },
+      { text: 'Decline and keep your savings secure.', tags: { security: 0.9, duty: 0.3 } },
+      { text: 'Invest only an amount you could afford to lose.', tags: { achievement: 0.6, autonomy: 0.6, consequentialist: 0.6, liberty: 0.3 } },
+      { text: 'Ask for more information before deciding anything.', tags: { honesty: 0.3, virtue: 0.5, security: 0.5 } },
+      { text: 'Say no to the pressure to decide fast, and trust your own judgement.', tags: { autonomy: 0.8, virtue: 0.5, liberty: 0.6 } },
     ],
   },
 ];
@@ -160,6 +112,12 @@ const KEYWORDS = {
   duty: ['duty', 'obligation', 'promise', 'right thing', 'rules'],
   virtue: ['character', 'integrity', 'courage', 'virtue', 'who i want to be'],
   egalitarian: ['equal', 'equality', 'everyone', 'share equally'],
+  'harm-care': ['harm', 'hurt', 'suffer', 'cruel', 'pain'],
+  reciprocity: ['reciprocity', 'reciprocal', 'repay', 'pay back', 'return the favour', 'owe'],
+  'ingroup-loyalty': ['betray', 'betrayal', 'our side', 'belong', 'stick together'],
+  authority: ['authority', 'obey', 'respect', 'chain of command', 'elders', 'law'],
+  sanctity: ['sacred', 'holy', 'pure', 'dignity', 'disgust', 'degrad'],
+  liberty: ['oppress', 'coerce', 'pressure', 'control', 'liberty', 'free to'],
 };
 
 function escapeRegExp(text) {

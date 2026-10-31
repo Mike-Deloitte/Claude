@@ -402,9 +402,11 @@ function ResultsScreen({ profile, onBack }) {
             <Text style={styles.cardTitle}>Summary</Text>
             <SummaryLine heading="Leading values" items={scores.values.slice(0, 3)} />
             <SummaryLine heading="Leading philosophies" items={scores.philosophies.slice(0, 3)} />
+            <SummaryLine heading="Leading morals" items={scores.morals.slice(0, 3)} />
           </Card>
           <RankingCard title="Values" items={scores.values} />
           <RankingCard title="Philosophies" items={scores.philosophies} />
+          <RankingCard title="Morals" items={scores.morals} />
         </>
       )}
 

@@ -19,10 +19,21 @@ export const PHILOSOPHIES = [
   { id: 'egalitarian', label: 'Egalitarian' },
 ];
 
+// Moral foundations (after Haidt's framework). Ids are prefixed or distinct from the
+// values ids, because every tag id must be unique across the whole taxonomy.
+export const MORALS = [
+  { id: 'harm-care', label: 'Harm and care' },
+  { id: 'reciprocity', label: 'Fairness and reciprocity' },
+  { id: 'ingroup-loyalty', label: 'Ingroup loyalty' },
+  { id: 'authority', label: 'Authority and respect' },
+  { id: 'sanctity', label: 'Purity and sanctity' },
+  { id: 'liberty', label: 'Liberty and freedom from control' },
+];
+
 // Written answers count more than a standard choice because the user chose the words.
 export const WRITTEN_WEIGHT = 1.5;
 
-const KNOWN_IDS = new Set([...VALUES, ...PHILOSOPHIES].map((t) => t.id));
+const KNOWN_IDS = new Set([...VALUES, ...PHILOSOPHIES, ...MORALS].map((t) => t.id));
 
 export function isTagId(id) {
   return KNOWN_IDS.has(id);
