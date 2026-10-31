@@ -25,7 +25,12 @@ import {
   saveState,
   switchProfile,
 } from './src/storage';
-import { analyzeWritten, generateScenarios } from './src/scenarios';
+import {
+  analyzeWritten,
+  generateScenarios,
+  remainingScenarioCount,
+  scenarioKeysUsed,
+} from './src/scenarios';
 import { computeScores } from './src/scoring';
 
 const COLORS = {
@@ -111,7 +116,12 @@ export default function App() {
 
   async function handleStart() {
     if (!activeProfile) return;
-    const scenarios = await generateScenarios(sessionSize);
+    const used = scenarioKeysUsed(activeProfile.sessions);
+    const scenarios = await generateScenarios(sessionSize, used);
+    if (scenarios.length < sessionSize) {
+      Alert.alert('Not enough new scenarios', 'Choose a smaller session.');
+      return;
+    }
     setRun({
       id: newId('ses'),
       profileId: activeProfile.id,
@@ -183,6 +193,7 @@ export default function App() {
     <HomeScreen
       profile={activeProfile}
       sessionSize={sessionSize}
+      remaining={activeProfile ? remainingScenarioCount(activeProfile.sessions) : 0}
       onSizeChange={setSessionSize}
       onStart={handleStart}
       onResults={() => setScreen('results')}
@@ -279,7 +290,9 @@ function ProfilesScreen({ profiles, activeId, onCreate, onOpen, onDelete }) {
   );
 }
 
-function HomeScreen({ profile, sessionSize, onSizeChange, onStart, onResults, onSwitch }) {
+function HomeScreen({ profile, sessionSize, remaining, onSizeChange, onStart, onResults, onSwitch }) {
+  const exhausted = remaining === 0;
+  const tooLarge = sessionSize > remaining;
   return (
     <Screen title={profile.name} subtitle="Active profile">
       <Card>
@@ -290,11 +303,24 @@ function HomeScreen({ profile, sessionSize, onSizeChange, onStart, onResults, on
               key={n}
               label={String(n)}
               selected={n === sessionSize}
+              disabled={n > remaining}
               onPress={() => onSizeChange(n)}
             />
           ))}
         </View>
-        <Button label="Start session" onPress={onStart} />
+        <Text style={styles.muted}>
+          {exhausted
+            ? 'You have seen every scenario available to this profile.'
+            : `${plural(remaining, 'new scenario')} left for this profile. A scenario is never shown twice.`}
+        </Text>
+        <Button
+          label="Start session"
+          onPress={onStart}
+          disabled={exhausted || tooLarge}
+        />
+        {tooLarge && !exhausted ? (
+          <Text style={styles.muted}>Choose a session of {remaining} or fewer.</Text>
+        ) : null}
       </Card>
 
       <Button label="View my results" variant="secondary" onPress={onResults} />
@@ -484,13 +510,14 @@ function Button({ label, onPress, variant = 'primary', disabled = false, style }
   );
 }
 
-function Chip({ label, selected, onPress }) {
+function Chip({ label, selected, disabled = false, onPress }) {
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={disabled}
       accessibilityRole="button"
-      accessibilityState={{ selected }}
-      style={[styles.chip, selected && styles.chipSelected]}
+      accessibilityState={{ selected, disabled }}
+      style={[styles.chip, selected && styles.chipSelected, disabled && styles.disabled]}
     >
       <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{label}</Text>
     </TouchableOpacity>
