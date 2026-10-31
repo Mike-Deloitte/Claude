@@ -99,6 +99,12 @@ Both of these run locally today. Their signatures are async so a backend call ca
 - `generateScenarios(count, excludeKeys)` draws up to `count` scenarios from the bank that are not in `excludeKeys`. Each scenario has a stable `key`. `scenarioKeysUsed(sessions)` lists the keys a profile has already seen, across all its sessions, so no scenario repeats within a profile. Every scenario gets a unique id and at least four options. Each scenario has at least one option that carries moral tags.
 - `analyzeWritten(text)` does keyword matching. Each keyword hit adds 0.5 to a tag's strength, capped at 1. Matching is whole-word with common endings, so "career" does not match "care". It covers values, philosophies, and morals.
 
+## The built-in scenario bank
+
+`src/bank.js` holds 50 scenarios. Each has four responses, and each response is mapped to philosophies, values, and moral foundations with strengths from 0 to 1. Keys are `q01` to `q50`. Keep them stable: a key that changes would let a profile see that scenario again.
+
+Earlier sessions saved with the previous 15 scenarios keep their answers and results. Their scenarios are no longer in the bank, so they do not reduce the remaining count.
+
 ## Generating new scenarios (optional)
 
 When a profile has used all built-in scenarios, the app can ask the scenario server for new ones. Without the server, the profile stops at the built-in bank.
@@ -142,7 +148,7 @@ The reply is checked on the server and again in the app. Scenarios with the wron
 ## Known limitations
 
 - The written-answer analysis is keyword matching and will miss a lot. Treat its tags as rough.
-- Scenarios come from a fixed bank of fifteen. Each profile gets each scenario once, across all its sessions. Once a profile has seen all fifteen, it cannot start another session until more scenarios are added.
+- The built-in bank holds fifty scenarios. Each profile gets each scenario once, across all its sessions. Once a profile has seen all fifty, it needs the scenario server (see below) to start another session.
 - The `react-native` version is pinned to 0.76.5 as specified. `expo install --check` reports 0.76.9 as the SDK 52 expected version.
 - `app.json` uses placeholder bundle identifiers (`com.example.values`). Change them before any store build. No icon or splash image is set.
 - Verified by bundling for iOS and Android, running the Metro dev server, unit-testing the pure logic, and driving the UI in a browser harness. Not yet run on a physical device or simulator.
